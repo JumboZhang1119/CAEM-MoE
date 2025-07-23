@@ -8,7 +8,8 @@ It provides all the necessary code, scripts, and instructions to reproduce the e
 
 Paper Link: [Link to Paper (to be updated with arXiv/ACL Anthology link)]
 
-<img width="1313" height="481" alt="Graph01" src="https://github.com/user-attachments/assets/93eedbe9-e59b-4acb-9270-5dbe59c11f9f" />
+<img width="1290" height="507" alt="截圖 2025-07-24 凌晨3 05 39" src="https://github.com/user-attachments/assets/b067b067-cb7a-4624-b1e2-7cf476f791ed" />
+
 
 
 ## 2. Abstract of Core Contribution
