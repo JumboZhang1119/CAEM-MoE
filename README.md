@@ -40,27 +40,111 @@ It is **highly recommended** to use a virtual environment (e.g., ``venv`` or ``c
    # conda create -n caem python=3.9
    # conda activate caem
    ```
-2. Create a ``requirements.txt`` file with the following content. Note that the ``transformers`` package version is pinned, which is critical for the patching step below.
+2. Install all dependencies.
 
    ```
-   # requirements.txt
-   torch
-   transformers==4.46.3
-   datasets
-   accelerate
-   sentencepiece
-   evaluate
-   rouge_score
-   scikit-learn
-   numpy
+   conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+   conda install -c conda-forge datasets tqdm transformers==4.46.3
+   conda install numpy evaluate
+   pip install rouge-score
    ```
-3. Install all dependencies.
 
+### 3-3 Patching the transformers Library
+
+> WARNING: Please ensure you are operating within a dedicated virtual environment.
+
+The core logic of CAEM is implemented by modifying two source files within the Hugging Face ``transformers`` library. This step is necessary to inject the custom expert selection and merging functions into the Switch Transformer's architecture. This approach is highly sensitive to the library version, which is why we have locked the ``transformers`` version in ``requirements.txt``.   
+1. Locate the transformers library installation path.
+  
+   > This command finds the installation directory of the transformers library in your environment
    ```
-   pip install -r requirements.txt
+   TRANSFORMERS_PATH=$(python -c "import transformers; import os; print(os.path.dirname(transformers.__file__))")
+   ```
+2. Apply the patch.
+
+   > Copy ``modeling_switch_transformers.py`` and ``configuration_switch_transformers.py`` to the corresponding directory in the transformers library, replacing the original files.
+   ```
+   cp./caem_files/modeling_switch_transformers.py $TRANSFORMERS_PATH/models/switch_transformers/
+   cp./caem_files/configuration_switch_transformers.py $TRANSFORMERS_PATH/models/switch_transformers/
    ```
    
+## 4. Data Preparation
 
+> Script file: ``datasets_preprocessing.py``
+   
+   ### 4-1 Script Functionality
+   
+   - Downloads the AG News, SQuAD v1.1, and XSum datasets from the Hugging Face Hub.
+
+   - Unifies all tasks into a sequence-to-sequence format, prepending inputs with task-specific prompts (e.g., ``Classify:``, ``Question:``, ``Context:``, ``Summarize:``).
+
+   - Tokenizes the datasets using T5TokenizerFast with pre-trained weight: ``google/switch-base-8``.
+
+   - Saves the processed datasets to local disk for fast loading during the training phase.
+
+   ### 4-2 Pre-execution settings
+
+   Set the following path: ``AG_NEWS_PATH``, ``SQUAD_PATH``, ``XSUM_PATH``.
+
+   ### 4-3 Execution Command
+
+   ```
+   python datasets_preprocessing.py
+   ```
+
+## 5. Train Single-Task Models (Prerequisite for CAEM)
+
+   ### 5-1 Pre-execution settings
+
+   Set the following path: ``DATA_DIR``, ``PICKLE_PATH``, ``MODEL_SAVE_PATH`` and global config: ``batch_size``, ``num_expert``, ``gradient_accumulation_steps``, ``task_type``.
+
+   ### 5-2 Execution Command
+
+   ```
+   python single_task_finetune.py
+   ```
+
+## 6. Baseline Multi-Task Models
+
+   ### 6-1 Pre-execution settings
+
+   Set the following path: ``DATA_DIR``, ``PICKLE_PATH``, ``MODEL_SAVE_PATH`` and global config: ``batch_size``, ``gradient_accumulation_steps``, ``experts_num``, ``current_case_name``.
+
+   > The resulting file name be like: ``{current_case_name}_[{experts_num}]``. (e.g. Baseline_[8])
+
+   ### 6-2 Execution Command
+
+   ```
+   python Baseline_multi_task_finetune.py
+   ```
+
+## 7. CAEM Multi-Task Models
+
+   ### 7-1 Pre-execution settings
+
+   Set the following path: ``DATA_DIR``, ``SOURCE_MODEL_WEIGHT_PATH``, ``PICKLE_PATH``, ``MODEL_SAVE_PATH`` and global config: ``batch_size``, ``gradient_accumulation_steps``, ``source_experts_num``, ``target_experts_num``, ``current_case_name``, ``alpha``(set to 0 for ablation studies).
+
+   > The resulting file name be like: ``{current_case_name}_[{source_experts_num}|{target_experts_num}]``. (e.g. CAEM_[8|16])
+
+   ### 7-2 Execution Command
+
+   ```
+   python CAEM_multi_task_finetune.py
+   ```
+
+## 8. Citation
+
+   ```
+   @inproceedings{anonymous2024caemmoe,
+       title={{CAEM-MOE}: Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts},
+       author={Anonymous},
+       booktitle={Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics},
+       year={2024},
+       publisher={Association for Computational Linguistics},
+       url={...to be updated...},
+       note={Code available at: [Link to this GitHub repository]}
+   }
+   ```
 
 
 
