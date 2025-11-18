@@ -1,9 +1,9 @@
 # CAEM-MoE
-Official Code for Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts
+Official Code for **Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts**
 
 ## 1. Introduction
 
-This repository contains the official implementation for our paper, **CAEM-MOE: Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts**. 
+This repository contains the official implementation for our paper, CAEM-MOE: Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts. 
 It provides all the necessary code, scripts, and instructions to reproduce the experimental results presented in the paper.
 
 Paper Link: [[CAEM-MoE](https://drive.google.com/file/d/1G47qGTmHSSklICpMZayNxAKnXCkJIk0_/view?usp=sharing)]
