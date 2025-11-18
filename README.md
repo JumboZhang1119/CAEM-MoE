@@ -3,10 +3,10 @@ Official Code for Complexity-Aware Expert Merging for Efficient Multi-Task Learn
 
 ## 1. Introduction
 
-This repository contains the official implementation for the 2025 AACL paper, **CAEM-MOE: Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts**. 
+This repository contains the official implementation for our paper, **CAEM-MOE: Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts**. 
 It provides all the necessary code, scripts, and instructions to reproduce the experimental results presented in the paper.
 
-Paper Link: [Link to Paper (to be updated with arXiv/ACL Anthology link)]
+Paper Link: [[CAEM-MoE](https://github.com/JumboZhang1119/CAEM-MoE/blob/main/CAEM-MoE.pdf)]
 
 <img width="1290" height="507" alt="截圖 2025-07-24 凌晨3 05 39" src="https://github.com/user-attachments/assets/b067b067-cb7a-4624-b1e2-7cf476f791ed" />
 
@@ -130,20 +130,6 @@ The core logic of CAEM is implemented by modifying two source files within the H
 
    ```
    python CAEM_multi_task_finetune.py
-   ```
-
-## 8. Citation
-
-   ```
-   @inproceedings{anonymous2024caemmoe,
-       title={{CAEM-MOE}: Complexity-Aware Expert Merging for Efficient Multi-Task Learning in Mixture of Experts},
-       author={Anonymous},
-       booktitle={Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics},
-       year={2024},
-       publisher={Association for Computational Linguistics},
-       url={...to be updated...},
-       note={Code available at: [Link to this GitHub repository]}
-   }
    ```
 
 
